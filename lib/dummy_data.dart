@@ -51,6 +51,6 @@ const DUMMY_DATA = const [
   Category(
     id: 'c10',
     title: 'Fruits and Vegies',
-    color: Colors.lime,
+    color: Colors.deepOrangeAccent,
   ),
 ];

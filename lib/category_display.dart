@@ -18,7 +18,7 @@ class CategoryDisplay extends StatelessWidget {
         ),
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      child: Text(title),
+      child: Text(title, style: Theme.of(context).textTheme.title,),
     );
   }
 }
