@@ -9,14 +9,19 @@ class CategoryDisplay extends StatelessWidget {
 
   CategoryDisplay(this.title, this.color, this.id);
 
-  void _selectCategory (BuildContext ctx) {
-    Navigator.of(ctx).pushNamed('/categoryMeals', arguments: {'id': id, 'title': title, 'color': color});
+  void _selectCategory(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(
+      CategoryMealsScreen.screenRoute,
+      arguments: {'id': id, 'title': title, 'color': color},
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {_selectCategory(context);},
+      onTap: () {
+        _selectCategory(context);
+      },
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.all(Radius.circular(15)),
       child: Container(
