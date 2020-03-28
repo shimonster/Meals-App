@@ -4,6 +4,7 @@ import '../models/meal.dart';
 import '../screens/meal_details_screen.dart';
 
 class MealDisplay extends StatelessWidget {
+  final Color color;
   final String id;
   final String name;
   final String imageURL;
@@ -14,6 +15,7 @@ class MealDisplay extends StatelessWidget {
   final List<String> preparationSteps;
 
   const MealDisplay({
+    @required this.color,
     @required this.id,
     @required this.name,
     @required this.imageURL,
@@ -27,7 +29,7 @@ class MealDisplay extends StatelessWidget {
   void _selectMeal(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
       MealDetailsScreen.screenRoute,
-      arguments: id,
+      arguments: {'id': id, 'color':color}
     );
   }
 

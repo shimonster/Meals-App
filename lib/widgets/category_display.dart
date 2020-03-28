@@ -11,7 +11,7 @@ class CategoryDisplay extends StatelessWidget {
 
   void _selectCategory(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
-      CategoryMealsScreen.screenRoute,
+      MealsScreen.screenRoute,
       arguments: {'id': id, 'title': title, 'color': color},
     );
   }

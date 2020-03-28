@@ -3,7 +3,7 @@ import '../widgets/meal_display.dart';
 
 import '../dummy_data.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
+class MealsScreen extends StatelessWidget {
   static const screenRoute = '/Catigory Meals Screen';
 
 //  final String categoryID;
@@ -27,6 +27,7 @@ class CategoryMealsScreen extends StatelessWidget {
       body: ListView.builder(
         itemBuilder: (ctx, index) {
           return MealDisplay(
+            color: routeArgs['color'],
             id: categoryMeals[index].id,
             name: categoryMeals[index].name,
             imageURL: categoryMeals[index].imageURL,
