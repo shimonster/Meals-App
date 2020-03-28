@@ -79,12 +79,30 @@ const DUMMY_RECIPES = [
         'amount': '2 TBS',
         'ingredient': 'Soy Sauce',
       },
+      {
+        'amount': '1',
+        'ingredient': 'Egg',
+      },
+      {
+        'amount': '2 grams',
+        'ingredient': 'ginger',
+      },
+      {
+        'amount': '1 cup',
+        'ingredient': 'Water',
+      },
+      {
+        'amount': 'A Pinch of',
+        'ingredient': 'Salt',
+      },
     ],
     preparationSteps: [
-      'Cook rice for 20 minutes',
-      'Mix in green peas and carrets',
+      'Cook rice for 20 minutes with water',
+      'Make omlet out of egg and crumble',
+      'Mince Ginger',
+      'Mix in green peas, carrets, ginger and egg',
       'Cook all together for 5 more minutes',
-      'Add soy sauce and serve'
+      'Add soy sauce and salt to taste and serve'
     ],
     servings: Servings.Some,
     timeToMake: 40,
