@@ -1,10 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-enum TimeToMake {
-  Quick,
-  Some,
-  Long,
-}
 
 enum Servings {
   Lots,
@@ -12,12 +7,19 @@ enum Servings {
   One,
 }
 
+enum Complexity {
+  Hard,
+  Medium,
+  Easy,
+}
+
 class Meal {
   final String id;
   final String name;
   final String imageURL;
-  final TimeToMake timeToMake;
+  final int timeToMake;
   final Servings servings;
+  final Complexity complexity;
   final List<String> categories;
   final List<Map<String, String>> ingredients;
   final List<String> preparationSteps;
@@ -33,6 +35,7 @@ class Meal {
     @required this.servings,
     @required this.timeToMake,
     @required this.categories,
+    @required this.complexity,
     @required this.ingredients,
     @required this.preparationSteps,
     @required this.isGlutenFree,

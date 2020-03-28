@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './screens/category_meals_screen.dart';
+import './screens/meals_screen.dart';
 import './screens/categories_screen.dart';
+import './screens/meal_details_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,12 +40,16 @@ class MyApp extends StatelessWidget {
                 body2: TextStyle(
                   color: Color.fromRGBO(20, 60, 40, 1),
                 ),
+                subhead: TextStyle(
+                  fontSize: 15,
+                )
               ),
         ),
 //      home: CategoriesScreen(),
         routes: {
           '/': (ctx) => CategoriesScreen(),
-          CategoryMealsScreen.screenRoute: (ctx) => CategoryMealsScreen()
+          CategoryMealsScreen.screenRoute: (ctx) => CategoryMealsScreen(),
+          MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(),
         });
   }
 }

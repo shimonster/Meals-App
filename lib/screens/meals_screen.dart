@@ -31,6 +31,7 @@ class CategoryMealsScreen extends StatelessWidget {
             name: categoryMeals[index].name,
             imageURL: categoryMeals[index].imageURL,
             timeToMake: categoryMeals[index].timeToMake,
+            complexity: categoryMeals[index].complexity,
             ingredients: categoryMeals[index].ingredients,
             preparationSteps: categoryMeals[index].preparationSteps,
             servings: categoryMeals[index].servings,

@@ -87,7 +87,8 @@ const DUMMY_RECIPES = [
       'Add soy sauce and serve'
     ],
     servings: Servings.Some,
-    timeToMake: TimeToMake.Quick,
+    timeToMake: 40,
+    complexity: Complexity.Medium,
     imageURL: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2019/1/11/0/KC1912_Bacon-and-Egg-Fried-Rice_s4x3.jpg.rend.hgtvcom.826.620.suffix/1547241481011.jpeg',
     isGlutenFree: false,
     isLactoseFree: true,
@@ -116,7 +117,8 @@ const DUMMY_RECIPES = [
       'Put on plate and serve'
     ],
     servings: Servings.One,
-    timeToMake: TimeToMake.Some,
+    timeToMake: 7,
+    complexity: Complexity.Easy,
     imageURL: 'https://x9wsr1khhgk5pxnq1f1r8kye-wpengine.netdna-ssl.com/wp-content/uploads/basic-french-omelet-930x550.jpg',
     isGlutenFree: false,
     isLactoseFree: false,
@@ -144,7 +146,8 @@ const DUMMY_RECIPES = [
       'Wait for it to cool and serve'
     ],
     servings: Servings.Lots,
-    timeToMake: TimeToMake.Long,
+    timeToMake: 30,
+    complexity: Complexity.Hard,
     imageURL: 'https://www.rockrecipes.com/wp-content/uploads/2008/03/Sweet-Potato-Spice-Muffins-square-cropped-featured-image.jpg',
     isGlutenFree: true,
     isLactoseFree: false,
