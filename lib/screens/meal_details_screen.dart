@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +39,7 @@ class MealDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    Function addFave = routeArgs['addFavorite'];
     var thisMeal = DUMMY_RECIPES.firstWhere(
       (meal) {
         return meal.id == routeArgs['id'];
@@ -51,6 +54,13 @@ class MealDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(thisMeal.name),
         backgroundColor: routeArgs['color'],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.star, color: Colors.white,),
+            disabledColor: Colors.grey,
+            onPressed: () {addFave(routeArgs['id']);},
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

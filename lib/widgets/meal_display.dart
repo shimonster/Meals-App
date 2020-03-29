@@ -14,6 +14,7 @@ class MealDisplay extends StatelessWidget {
   final List<Map<String, String>> ingredients;
   final List<String> preparationSteps;
   final Function removeMeal;
+  final Function addFavorite;
 
   const MealDisplay({
     @required this.color,
@@ -26,12 +27,13 @@ class MealDisplay extends StatelessWidget {
     @required this.ingredients,
     @required this.preparationSteps,
     @required this.removeMeal,
+    this.addFavorite
   });
 
   void _selectMeal(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
       MealDetailsScreen.screenRoute,
-      arguments: {'id': id, 'color': color},
+      arguments: {'id': id, 'color': color, 'addFavorite': addFavorite},
     ).then((id) {
       if (id != null) {
         removeMeal(id);

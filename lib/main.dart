@@ -57,8 +57,18 @@ class _MyAppState extends State<MyApp> {
   }
 
   void deleteFavorite (String id) {
-    favoriteMeals.removeWhere((meal) {
-      return meal.id == id;
+    setState(() {
+      favoriteMeals.removeWhere((meal) {
+        return meal.id == id;
+      });
+    });
+  }
+
+  void addFavorite (String id) {
+    setState(() {
+      favoriteMeals.add(DUMMY_RECIPES.firstWhere((meal) {
+        return meal.id == id;
+      }));
     });
   }
 
@@ -106,7 +116,7 @@ class _MyAppState extends State<MyApp> {
 //      home: CategoriesScreen(),
       routes: {
         '/': (ctx) => TabsScreen(favoriteMeals, deleteFavorite),
-        MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals),
+        MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals, addFavorite),
         MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(),
         FiltersScreen.screenRoute: (ctx) => FiltersScreen(_addFilters, _filters),
       },

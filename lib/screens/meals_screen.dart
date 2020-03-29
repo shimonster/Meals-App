@@ -7,8 +7,9 @@ import '../dummy_data.dart';
 class MealsScreen extends StatefulWidget {
   static const screenRoute = '/Catigory Meals Screen';
   final List<Meal> filteredMeals;
+  final Function addFavorite;
 
-  MealsScreen(this.filteredMeals);
+  MealsScreen(this.filteredMeals, this.addFavorite);
 
   @override
   _MealsScreenState createState() => _MealsScreenState();
@@ -58,6 +59,7 @@ class _MealsScreenState extends State<MealsScreen> {
             preparationSteps: categoryMeals[index].preparationSteps,
             servings: categoryMeals[index].servings,
             removeMeal: _removeMeal,
+            addFavorite: widget.addFavorite,
           );
         },
         itemCount: categoryMeals.length,
