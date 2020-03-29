@@ -13,6 +13,7 @@ class MealDisplay extends StatelessWidget {
   final Complexity complexity;
   final List<Map<String, String>> ingredients;
   final List<String> preparationSteps;
+  final Function removeMeal;
 
   const MealDisplay({
     @required this.color,
@@ -24,13 +25,18 @@ class MealDisplay extends StatelessWidget {
     @required this.complexity,
     @required this.ingredients,
     @required this.preparationSteps,
+    @required this.removeMeal,
   });
 
   void _selectMeal(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
       MealDetailsScreen.screenRoute,
-      arguments: {'id': id, 'color':color}
-    );
+      arguments: {'id': id, 'color': color},
+    ).then((id) {
+      if (id != null) {
+        removeMeal(id);
+      }
+    });
   }
 
   String get complexityText {

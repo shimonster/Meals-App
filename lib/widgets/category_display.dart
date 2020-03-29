@@ -12,7 +12,7 @@ class CategoryDisplay extends StatelessWidget {
   void _selectCategory(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
       MealsScreen.screenRoute,
-      arguments: {'id': id, 'title': title, 'color': color},
+      arguments: {'id': id, 'category title': title, 'color': color},
     );
   }
 

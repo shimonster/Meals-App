@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:mealsapp/models/meal.dart';
 import '../widgets/meal_display.dart';
 
 import '../dummy_data.dart';
 
-class MealsScreen extends StatelessWidget {
+class MealsScreen extends StatefulWidget {
   static const screenRoute = '/Catigory Meals Screen';
 
-//  final String categoryID;
-//  final String categoryTitle;
-//  final Color categoryColor;
-//
-//  CategoryMealsScreen(this.categoryTitle, this.categoryID, this.categoryColor);
+  @override
+  _MealsScreenState createState() => _MealsScreenState();
+}
+
+class _MealsScreenState extends State<MealsScreen> {
+  Map<String, Object> routeArgs;
+  List<Meal> categoryMeals;
+  var _didInitState = false;
+
+  @override
+  void didChangeDependencies() {
+    if (!_didInitState) {
+      routeArgs =
+          ModalRoute.of(context).settings.arguments as Map<String, Object>;
+      categoryMeals = DUMMY_RECIPES.where((item) {
+        return item.categories.contains(routeArgs['category title']);
+      }).toList();
+      _didInitState = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  void _removeMeal(String id) {
+    setState(() {
+      categoryMeals.removeWhere((meal) => meal.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, Object>;
-    final categoryMeals = DUMMY_RECIPES.where((item) {
-      return item.categories.contains(routeArgs['title']);
-    }).toList();
     return Scaffold(
       appBar: AppBar(
-        title: Text(routeArgs['title']),
+        title: Text(routeArgs['category title']),
         backgroundColor: routeArgs['color'],
       ),
       body: ListView.builder(
@@ -36,6 +54,7 @@ class MealsScreen extends StatelessWidget {
             ingredients: categoryMeals[index].ingredients,
             preparationSteps: categoryMeals[index].preparationSteps,
             servings: categoryMeals[index].servings,
+            removeMeal: _removeMeal,
           );
         },
         itemCount: categoryMeals.length,

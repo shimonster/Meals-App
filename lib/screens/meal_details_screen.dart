@@ -27,7 +27,7 @@ class MealDetailsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(20)),
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height * 1/3,
+      height: MediaQuery.of(context).size.height * 1 / 3,
       width: MediaQuery.of(context).size.width * 3 / 4,
       child: child,
     );
@@ -117,11 +117,15 @@ class MealDetailsScreen extends StatelessWidget {
                           leading: CircleAvatar(
                             child: Text(
                               (index + 1).toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             backgroundColor: routeArgs['color'],
                           ),
-                          title: Text(thisMeal.preparationSteps[index],),
+                          title: Text(
+                            thisMeal.preparationSteps[index],
+                          ),
                         ),
                         Divider(
                           thickness: 3,
@@ -133,6 +137,17 @@ class MealDetailsScreen extends StatelessWidget {
                 context)
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).errorColor,
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop(thisMeal.id);
+        },
       ),
     );
   }
