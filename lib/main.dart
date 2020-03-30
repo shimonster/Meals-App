@@ -10,6 +10,9 @@ import './models/meal.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
+  static var allMeals = DUMMY_RECIPES;
+  static var allCategories = DUMMY_CATEGORIES;
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -21,7 +24,6 @@ enum filterElement {
 }
 class _MyAppState extends State<MyApp> {
 
-
   Map<filterElement, bool> _filters = {
     filterElement.glutenFree: false,
     filterElement.vegan: false,
@@ -29,14 +31,14 @@ class _MyAppState extends State<MyApp> {
     filterElement.lactoseFree: false
   };
 
-  List<Meal> filteredMeals = DUMMY_RECIPES;
+  List<Meal> filteredMeals = MyApp.allMeals;
   List<Meal> favoriteMeals = [];
 
   void _addFilters (Map<filterElement, bool> currentFilters, BuildContext ctx) {
     setState(() {
       _filters = currentFilters;
 
-      filteredMeals = DUMMY_RECIPES.where((meal) {
+      filteredMeals = MyApp.allMeals.where((meal) {
         if (_filters[filterElement.glutenFree] && !meal.isGlutenFree) {
           return false;
         } else if (_filters[filterElement.vegan] && !meal.isVegan) {
@@ -66,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       });
     } else {
       setState(() {
-        favoriteMeals.add(DUMMY_RECIPES.firstWhere((meal) {
+        favoriteMeals.add(MyApp.allMeals.firstWhere((meal) {
           return meal.id == id;
         }));
       });

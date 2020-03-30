@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../dummy_data.dart';
-import '../models/meal.dart';
+import '../main.dart';
 
 class MealDetailsScreen extends StatelessWidget {
   static const screenRoute = '/MealDetailsScreen';
@@ -41,7 +40,7 @@ class MealDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
-    var thisMeal = DUMMY_RECIPES.firstWhere(
+    var thisMeal = MyApp.allMeals.firstWhere(
       (meal) {
         return meal.id == routeArgs['id'];
       },
