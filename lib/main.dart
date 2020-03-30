@@ -56,20 +56,25 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void deleteFavorite (String id) {
-    setState(() {
-      favoriteMeals.removeWhere((meal) {
-        return meal.id == id;
-      });
+  void _switchFaveStatus (String id) {
+    final mealIndexInFave = favoriteMeals.indexWhere((meal) {
+      return meal.id == id;
     });
+    if (mealIndexInFave >= 0) {
+      setState(() {
+        favoriteMeals.removeAt(mealIndexInFave);
+      });
+    } else {
+      setState(() {
+        favoriteMeals.add(DUMMY_RECIPES.firstWhere((meal) {
+          return meal.id == id;
+        }));
+      });
+    }
   }
 
-  void addFavorite (String id) {
-    setState(() {
-      favoriteMeals.add(DUMMY_RECIPES.firstWhere((meal) {
-        return meal.id == id;
-      }));
-    });
+  bool _isMealFavorite (String id) {
+    return favoriteMeals.any((meal) => meal.id == id);
   }
 
   @override
@@ -115,13 +120,13 @@ class _MyAppState extends State<MyApp> {
       ),
 //      home: CategoriesScreen(),
       routes: {
-        '/': (ctx) => TabsScreen(favoriteMeals, deleteFavorite),
-        MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals, addFavorite),
-        MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(),
+        '/': (ctx) => TabsScreen(favoriteMeals),
+        MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals),
+        MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(_switchFaveStatus, _isMealFavorite),
         FiltersScreen.screenRoute: (ctx) => FiltersScreen(_addFilters, _filters),
       },
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (ctx) => TabsScreen(favoriteMeals, deleteFavorite));
+        return MaterialPageRoute(builder: (ctx) => TabsScreen(favoriteMeals));
       },
     );
   }

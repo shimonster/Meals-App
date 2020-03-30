@@ -5,9 +5,8 @@ import '../widgets/meal_display.dart';
 
 class FavoritesScreen extends StatelessWidget {
   final List<Meal> favoriteMeals;
-  final Function removeFavorite;
 
-  FavoritesScreen(this.favoriteMeals, this.removeFavorite);
+  FavoritesScreen(this.favoriteMeals);
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +24,22 @@ class FavoritesScreen extends StatelessWidget {
                 ),
               ],
             )
-          : SingleChildScrollView(
-        child: Column(
-          children: favoriteMeals.map((meal) {
-            return MealDisplay(
-              color: Theme.of(context).primaryColor,
-              complexity: meal.complexity,
-              servings: meal.servings,
-              preparationSteps: meal.preparationSteps,
-              ingredients: meal.ingredients,
-              name: meal.name,
-              id: meal.id,
-              imageURL: meal.imageURL,
-              timeToMake: meal.timeToMake,
-              removeMeal: removeFavorite,
-            );
-          }).toList(),
-        ),
-      ),
+          : ListView.builder(
+              itemBuilder: (ctx, index) {
+                return MealDisplay(
+                  color: Theme.of(context).primaryColor,
+                  id: favoriteMeals[index].id,
+                  name: favoriteMeals[index].name,
+                  imageURL: favoriteMeals[index].imageURL,
+                  timeToMake: favoriteMeals[index].timeToMake,
+                  complexity: favoriteMeals[index].complexity,
+                  ingredients: favoriteMeals[index].ingredients,
+                  preparationSteps: favoriteMeals[index].preparationSteps,
+                  servings: favoriteMeals[index].servings,
+                );
+              },
+              itemCount: favoriteMeals.length,
+            ),
     );
   }
 }
