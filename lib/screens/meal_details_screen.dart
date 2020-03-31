@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import '../models/meal.dart';
 
 class MealDetailsScreen extends StatelessWidget {
   static const screenRoute = '/MealDetailsScreen';
   final Function changeFavoriteStatus;
   final Function isMealFavorite;
+  final List<Meal> allMeals;
 
-  MealDetailsScreen(this.changeFavoriteStatus, this.isMealFavorite);
+  MealDetailsScreen(this.changeFavoriteStatus, this.isMealFavorite, this.allMeals);
 
   Widget buildSectionTitle(String text, BuildContext context) {
     return Container(
@@ -40,7 +41,7 @@ class MealDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var routeArgs =
         ModalRoute.of(context).settings.arguments as Map<String, Object>;
-    var thisMeal = MyApp.allMeals.firstWhere(
+    var thisMeal = allMeals.firstWhere(
       (meal) {
         return meal.id == routeArgs['id'];
       },

@@ -6,12 +6,11 @@ import './screens/meal_details_screen.dart';
 import './screens/tabs_screen.dart';
 import './dummy_data.dart';
 import './models/meal.dart';
+import './models/category.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  static var allMeals = DUMMY_RECIPES;
-  static var allCategories = DUMMY_CATEGORIES;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -23,6 +22,9 @@ enum filterElement {
   lactoseFree,
 }
 class _MyAppState extends State<MyApp> {
+  List<Meal> filteredMeals;
+  var allMeals = dummyRecipes;
+  var allCategories = dummyCategories;
 
   Map<filterElement, bool> _filters = {
     filterElement.glutenFree: false,
@@ -31,14 +33,19 @@ class _MyAppState extends State<MyApp> {
     filterElement.lactoseFree: false
   };
 
-  List<Meal> filteredMeals = MyApp.allMeals;
+  @override
+  void initState() {
+    filteredMeals = allMeals;
+    super.initState();
+  }
+
   List<Meal> favoriteMeals = [];
 
   void _addFilters (Map<filterElement, bool> currentFilters, BuildContext ctx) {
     setState(() {
       _filters = currentFilters;
 
-      filteredMeals = MyApp.allMeals.where((meal) {
+      filteredMeals = allMeals.where((meal) {
         if (_filters[filterElement.glutenFree] && !meal.isGlutenFree) {
           return false;
         } else if (_filters[filterElement.vegan] && !meal.isVegan) {
@@ -68,7 +75,7 @@ class _MyAppState extends State<MyApp> {
       });
     } else {
       setState(() {
-        favoriteMeals.add(MyApp.allMeals.firstWhere((meal) {
+        favoriteMeals.add(allMeals.firstWhere((meal) {
           return meal.id == id;
         }));
       });
@@ -77,6 +84,17 @@ class _MyAppState extends State<MyApp> {
 
   bool _isMealFavorite (String id) {
     return favoriteMeals.any((meal) => meal.id == id);
+  }
+
+  void addCategory(String titleInput, Color selectedColor, bool isAddingCategory, ) {
+    setState(() {
+      isAddingCategory = false;
+      allCategories.add(Category(
+          id: '$titleInput${DateTime.now()}',
+          title: titleInput,
+          color: selectedColor));
+    });
+    print(allCategories);
   }
 
   @override
@@ -122,13 +140,13 @@ class _MyAppState extends State<MyApp> {
       ),
 //      home: CategoriesScreen(),
       routes: {
-        '/': (ctx) => TabsScreen(favoriteMeals),
+        '/': (ctx) => TabsScreen(favoriteMeals, addCategory, allCategories),
         MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals),
-        MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(_switchFaveStatus, _isMealFavorite),
+        MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(_switchFaveStatus, _isMealFavorite, allMeals),
         FiltersScreen.screenRoute: (ctx) => FiltersScreen(_addFilters, _filters),
       },
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (ctx) => TabsScreen(favoriteMeals));
+        return MaterialPageRoute(builder: (ctx) => TabsScreen(favoriteMeals, addCategory, allCategories));
       },
     );
   }

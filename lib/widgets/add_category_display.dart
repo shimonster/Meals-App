@@ -5,6 +5,10 @@ import './color_selector_display.dart';
 import '../main.dart';
 
 class AddCategoryDisplay extends StatefulWidget {
+  final Function addCategory;
+
+  AddCategoryDisplay(this.addCategory);
+
   @override
   _AddCategoryDisplayState createState() => _AddCategoryDisplayState();
 }
@@ -60,27 +64,19 @@ class _AddCategoryDisplayState extends State<AddCategoryDisplay> {
   ];
 
   void selectColor(index) {
-    var selectedColorIndex =
-        possibleColors.indexWhere((color) => color['selected'] == true);
-    if (selectedColorIndex >= 0) {
-      possibleColors[selectedColorIndex]['selected'] = false;
-    }
-    possibleColors[index]['selected'] = true;
+    setState(() {
+      var selectedColorIndex =
+      possibleColors.indexWhere((color) => color['selected'] == true);
+      if (selectedColorIndex >= 0) {
+        possibleColors[selectedColorIndex]['selected'] = false;
+      }
+      possibleColors[index]['selected'] = true;
+    });
   }
 
   void startCategoryDisplay(BuildContext ctx) {
     setState(() {
       isAddingCategory = true;
-    });
-  }
-
-  void addCategory(String titleInput, Color selectedColor) {
-    setState(() {
-      isAddingCategory = false;
-      MyApp.allCategories.add(Category(
-          id: '$titleInput${DateTime.now()}',
-          title: titleInput,
-          color: selectedColor));
     });
   }
 
@@ -93,29 +89,33 @@ class _AddCategoryDisplayState extends State<AddCategoryDisplay> {
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.all(Radius.circular(15)),
       child: Container(
+        color: Colors.white,
         child: isAddingCategory
-            ? Column(
-                children: <Widget>[
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Category Name',
-                        border: OutlineInputBorder()),
-                    controller: categoryNameController,
-                  ),
-                  ColorSelectorDisplay(possibleColors, selectColor),
-                  FlatButton(
-                    child: Text(
-                      'Add',
-                      style: Theme.of(context).textTheme.title,
+            ? SingleChildScrollView(
+              child: Column(
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(
+                          labelText: 'Category Name',
+                          border: OutlineInputBorder()),
+                      controller: categoryNameController,
                     ),
-                    onPressed: () => addCategory(
-                      categoryNameController.text,
-                      possibleColors.firstWhere(
-                          (color) => color['selected'] == true)['color'],
+                    ColorSelectorDisplay(possibleColors, selectColor),
+                    FlatButton(
+                      child: Text(
+                        'Add',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      onPressed: () => widget.addCategory(
+                        categoryNameController.text,
+                        possibleColors.firstWhere(
+                            (color) => color['selected'] == true)['color'],
+                        isAddingCategory
+                      ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                ),
+            )
             : Icon(
                 Icons.add,
                 size: 60,
