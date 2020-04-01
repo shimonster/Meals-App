@@ -22,7 +22,12 @@ class CreateMealScreen extends StatelessWidget {
     final _imageURLController = TextEditingController();
     final List<String> _selectedCategories = [];
     final List<String> _preparationSteps = [''];
-    final List<Map<String, String>> _ingredients = [];
+    final List<Map<String, String>> _ingredients = [
+      {
+        'amount': '3 cups',
+        'ingredient': 'flour',
+      }
+    ];
 
     Widget _buildTextInput(String label, TextEditingController controller,
         TextInputType keyboard, IconData icon) {

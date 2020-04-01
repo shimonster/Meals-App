@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MealAddIngredientDisplay extends StatefulWidget {
@@ -12,6 +13,32 @@ class MealAddIngredientDisplay extends StatefulWidget {
 
 class _MealAddIngredientDisplayState extends State<MealAddIngredientDisplay> {
   int selectedIndex;
+  List<double> currentWholeNumbers = [3];
+
+  Widget _buildNumberCustomizer (double textVariable, double min, double max, double increment) {
+    return Column(
+      children: <Widget>[
+        IconButton(
+          onPressed: textVariable < max ? () {
+            setState(() {
+              print(textVariable);
+              textVariable += 9;
+            });
+          } : null,
+          icon: Icon(Icons.keyboard_arrow_up),
+        ),
+        Text(textVariable.toString(), style: Theme.of(context).textTheme.subtitle,),
+        IconButton(
+          onPressed: textVariable > min ? () {
+            setState(() {
+              textVariable -= increment;
+            });
+          } : null,
+          icon: Icon(Icons.keyboard_arrow_down),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +62,15 @@ class _MealAddIngredientDisplayState extends State<MealAddIngredientDisplay> {
         itemCount: widget.ingredients.length,
         itemBuilder: (BuildContext ctx, int index) {
           return InkWell(
-            onTap: () {
+            onTap: selectedIndex != index ? () {
               setState(() {
                 selectedIndex = index;
               });
-            },
+            } : null,
             child: Card(
               child: Row(
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      OutlineButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.keyboard_arrow_up),
-                      )
-                    ],
-                  )
+                  _buildNumberCustomizer(currentWholeNumbers[index], 0, double.infinity, 2)
                 ],
               ),
             ),
