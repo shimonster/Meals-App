@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/meal.dart';
 import '../widgets/meal_display.dart';
+import './create_meal_screen.dart';
 
 class MealsScreen extends StatefulWidget {
   static const screenRoute = '/Catigory Meals Screen';
@@ -33,6 +34,7 @@ class _MealsScreenState extends State<MealsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(routeArgs['category title']),
@@ -53,6 +55,12 @@ class _MealsScreenState extends State<MealsScreen> {
           );
         },
         itemCount: categoryMeals.length,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(CreateMealScreen.screenRoute);
+        },
       ),
     );
   }

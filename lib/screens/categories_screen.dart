@@ -23,11 +23,12 @@ class CategoriesScreen extends StatelessWidget {
           AddCategoryDisplay(addCategory),
         ],
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200,
-        childAspectRatio: 4 / 3,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 15,
+          maxCrossAxisExtent: 200,
+          childAspectRatio: 4 / 3,
+          crossAxisSpacing: 15,
+          mainAxisSpacing: 15,
+        ),
       ),
-    ),);
+    );
   }
 }

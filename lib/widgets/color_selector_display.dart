@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class ColorSelectorDisplay extends StatelessWidget {
   final List<Map<String, Object>> possibleColors;
-  final Function  selectColor;
+  final Function selectColor;
 
   ColorSelectorDisplay(this.possibleColors, this.selectColor);
-
 
   Widget colorDisplay(Color color, double borderWidth, int index) {
     return GestureDetector(
@@ -16,7 +15,11 @@ class ColorSelectorDisplay extends StatelessWidget {
         height: 30,
         width: 30,
         decoration: BoxDecoration(
-            color: color,
+            gradient: LinearGradient(
+              colors: [color.withOpacity(0.4), color],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
             border: Border.all(
               color: Colors.grey[800],
               width: borderWidth,
@@ -29,12 +32,28 @@ class ColorSelectorDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.horizontal,
+      child: Container(
         child: Row(
           children: possibleColors.map((color) {
             var colorIndex = possibleColors.indexWhere((clr) => clr == color);
-            return colorDisplay(color['color'], color['selected'] ? 5 : 1, colorIndex);
+            return Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 5,
+              ),
+              decoration: BoxDecoration(
+                border: color['selected']
+                    ? Border(
+                        bottom: BorderSide(
+                          width: 4,
+                          color: color['color'],
+                        ),
+                      )
+                    : Border(),
+              ),
+              child: colorDisplay(color['color'],
+                  /*color['selected'] ? 3 : */ 1, colorIndex),
+            );
           }).toList(),
         ),
       ),

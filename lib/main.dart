@@ -4,6 +4,7 @@ import './screens/filters_screen.dart';
 import './screens/meals_screen.dart';
 import './screens/meal_details_screen.dart';
 import './screens/tabs_screen.dart';
+import './screens/create_meal_screen.dart';
 import './dummy_data.dart';
 import './models/meal.dart';
 import './models/category.dart';
@@ -21,6 +22,8 @@ enum filterElement {
   vegetarian,
   lactoseFree,
 }
+
+
 class _MyAppState extends State<MyApp> {
   List<Meal> filteredMeals;
   var allMeals = dummyRecipes;
@@ -144,6 +147,7 @@ class _MyAppState extends State<MyApp> {
         MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals),
         MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(_switchFaveStatus, _isMealFavorite, allMeals),
         FiltersScreen.screenRoute: (ctx) => FiltersScreen(_addFilters, _filters),
+        CreateMealScreen.screenRoute: (ctx) => CreateMealScreen(allCategories),
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (ctx) => TabsScreen(favoriteMeals, addCategory, allCategories));
