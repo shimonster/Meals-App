@@ -15,7 +15,7 @@ class _MealAddStepDisplayState extends State<MealAddStepDisplay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 3 / 4,
+      width: MediaQuery.of(context).size.width * 9/10,
       height: MediaQuery.of(context).orientation == Orientation.landscape
           ? MediaQuery.of(context).size.height * 2 / 5
           : MediaQuery.of(context).size.height * 2 / 7,
@@ -70,7 +70,7 @@ class _MealAddStepDisplayState extends State<MealAddStepDisplay> {
                 if (widget.preparationSteps.length > 1)
                   IconButton(
                       icon: Icon(
-                        Icons.clear,
+                        Icons.delete,
                         color: Theme.of(context).errorColor,
                       ),
                       onPressed: () {
