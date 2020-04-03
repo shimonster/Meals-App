@@ -1,40 +1,19 @@
 import 'package:flutter/material.dart';
 
-
 class ButtonSelectionDisplay extends StatefulWidget {
   final List<Map<String, Object>> options;
-  final Function switchInputOutput;
   final bool canOnlySelectOne;
+  final Function switchSelection;
+  final Object basedOnObject;
 
-  ButtonSelectionDisplay(
-      this.options, this.switchInputOutput, this.canOnlySelectOne);
+  ButtonSelectionDisplay(this.options, this.canOnlySelectOne,
+      this.switchSelection, this.basedOnObject);
 
   @override
   _ButtonSelectionDisplay createState() => _ButtonSelectionDisplay();
 }
 
 class _ButtonSelectionDisplay extends State<ButtonSelectionDisplay> {
-  int selectedItemIndex; // used if can only select one
-  List<int> selectedItems = []; // used if can select more than one
-
-  void switchSelection(int thisIdx, Map<String, Object> thisOption) {
-    setState(() {
-      if (widget.canOnlySelectOne) {
-        if (selectedItemIndex != thisIdx) {
-          selectedItemIndex = thisIdx;
-        } else {
-          selectedItemIndex = null;
-        }
-      } else {
-        if (!selectedItems.contains(thisIdx)) {
-          selectedItems.add(thisIdx);
-        } else {
-          selectedItems.removeWhere((index) => index == thisIdx);
-        }
-      }
-      widget.switchInputOutput(thisOption['output']);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +23,22 @@ class _ButtonSelectionDisplay extends State<ButtonSelectionDisplay> {
       children: <Widget>[
         ...widget.options.map((option) {
           var thisIndex =
-          widget.options.indexWhere((thisOption) => thisOption == option);
-          print(thisIndex);
+              widget.options.indexWhere((thisOption) => thisOption == option);
           return RaisedButton(
             child: option['input'],
-            color: selectedItemIndex == thisIndex ||
-                selectedItems.contains(thisIndex)
+            color: option['isSelected']
                 ? Theme.of(context).primaryColor
                 : Theme.of(context).accentColor,
-            elevation: selectedItemIndex == thisIndex ||
-                selectedItems.contains(thisIndex) ? 10 : 0,
+            elevation: option['isSelected']
+                ? 10
+                : 0,
             onPressed: () {
-              switchSelection(thisIndex, option);
+              widget.switchSelection(
+                  thisIndex,
+                  option,
+                  widget.canOnlySelectOne,
+                  widget.basedOnObject,
+                  widget.options);
             },
           );
         }).toList(),
@@ -63,8 +46,7 @@ class _ButtonSelectionDisplay extends State<ButtonSelectionDisplay> {
           icon: Icon(Icons.clear),
           onPressed: () {
             setState(() {
-              selectedItemIndex = null;
-              selectedItems = [];
+              widget.options.map((option) => option['isSelected'] = false);
             });
           },
         )

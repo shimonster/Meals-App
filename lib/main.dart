@@ -12,17 +12,16 @@ import './models/category.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
 }
+
 enum filterElement {
   glutenFree,
   vegan,
   vegetarian,
   lactoseFree,
 }
-
 
 class _MyAppState extends State<MyApp> {
   List<Meal> filteredMeals;
@@ -44,7 +43,7 @@ class _MyAppState extends State<MyApp> {
 
   List<Meal> favoriteMeals = [];
 
-  void _addFilters (Map<filterElement, bool> currentFilters, BuildContext ctx) {
+  void _addFilters(Map<filterElement, bool> currentFilters, BuildContext ctx) {
     setState(() {
       _filters = currentFilters;
 
@@ -68,7 +67,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _switchFaveStatus (String id) {
+  void _switchFaveStatus(String id) {
     final mealIndexInFave = favoriteMeals.indexWhere((meal) {
       return meal.id == id;
     });
@@ -85,11 +84,15 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  bool _isMealFavorite (String id) {
+  bool _isMealFavorite(String id) {
     return favoriteMeals.any((meal) => meal.id == id);
   }
 
-  void addCategory(String titleInput, Color selectedColor, bool isAddingCategory, ) {
+  void addCategory(
+    String titleInput,
+    Color selectedColor,
+    bool isAddingCategory,
+  ) {
     setState(() {
       isAddingCategory = false;
       allCategories.add(Category(
@@ -100,8 +103,46 @@ class _MyAppState extends State<MyApp> {
     print(allCategories);
   }
 
+  void _addMeal(
+    TextEditingController nameController,
+    Servings selectedServings,
+    Complexity selectedComplexity,
+    TextEditingController timeToMakeController,
+    TextEditingController imageURLController,
+    List<String> selectedCategories,
+    List<String> preparationSteps,
+    List<Map<String, String>> ingredients,
+    bool isGlutenFree,
+    bool isLactoseFree,
+    bool isVegan,
+    bool isVegetarian,
+  ) {
+    setState(() {
+      allMeals.add(
+        Meal(
+          id: '${nameController.text}${imageURLController.text}',
+          name: nameController.text,
+          timeToMake: int.parse(timeToMakeController.text),
+          imageURL: imageURLController.text,
+          servings: selectedServings,
+          complexity: selectedComplexity,
+          categories: selectedCategories,
+          ingredients: ingredients,
+          preparationSteps: preparationSteps,
+          isVegetarian: isVegetarian,
+          isVegan: isVegan,
+          isLactoseFree: isLactoseFree,
+          isGlutenFree: isGlutenFree,
+        ),
+      );
+    });
+    print (allMeals);
+    print(allMeals[3].isVegan);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('main build was run');
     return MaterialApp(
       title: 'Meals',
       theme: ThemeData(
@@ -118,10 +159,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-        textTheme: ThemeData
-            .light()
-            .textTheme
-            .copyWith(
+        textTheme: ThemeData.light().textTheme.copyWith(
             title: TextStyle(
               fontFamily: 'RobotoCondensed',
               fontSize: 20,
@@ -138,19 +176,23 @@ class _MyAppState extends State<MyApp> {
             ),
             subhead: TextStyle(
               fontSize: 15,
-            )
-        ),
+            )),
       ),
 //      home: CategoriesScreen(),
       routes: {
         '/': (ctx) => TabsScreen(favoriteMeals, addCategory, allCategories),
         MealsScreen.screenRoute: (ctx) => MealsScreen(filteredMeals),
-        MealDetailsScreen.screenRoute: (ctx) => MealDetailsScreen(_switchFaveStatus, _isMealFavorite, allMeals),
-        FiltersScreen.screenRoute: (ctx) => FiltersScreen(_addFilters, _filters),
-        CreateMealScreen.screenRoute: (ctx) => CreateMealScreen(allCategories),
+        MealDetailsScreen.screenRoute: (ctx) =>
+            MealDetailsScreen(_switchFaveStatus, _isMealFavorite, allMeals),
+        FiltersScreen.screenRoute: (ctx) =>
+            FiltersScreen(_addFilters, _filters),
+        CreateMealScreen.screenRoute: (ctx) =>
+            CreateMealScreen(allCategories, _addMeal),
       },
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (ctx) => TabsScreen(favoriteMeals, addCategory, allCategories));
+        return MaterialPageRoute(
+            builder: (ctx) =>
+                TabsScreen(favoriteMeals, addCategory, allCategories));
       },
     );
   }
