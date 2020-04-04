@@ -96,7 +96,6 @@ class _MealAddIngredientDisplayState extends State<MealAddIngredientDisplay> {
           'ingredient': ingredientNameControllers[selectedIndex].text
         });
       }
-      print(widget.ingredients);
     }
 
     return Container(

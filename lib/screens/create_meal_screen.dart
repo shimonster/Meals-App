@@ -19,45 +19,130 @@ class CreateMealScreen extends StatefulWidget {
 }
 
 class _CreateMealScreenState extends State<CreateMealScreen> {
+  final _nameController = TextEditingController();
+  Map<String, Servings> _selectedServing;
+  Map<String, Complexity> _selectedComplexity;
+  final _timeToMakeController = TextEditingController();
+  final _imageURLController = TextEditingController();
+  Map<String, List<String>> _selectedCategories;
+  final List<String> _preparationSteps = [''];
+  final List<Map<String, String>> _ingredients = [
+    {'': '', '': ''}
+  ];
+  final bool _isGlutenFree = false;
+  final bool _isLactoseFree = false;
+  final bool _isVegan = false;
+  final bool _isVegetarian = false;
+  var _servingsOptions = [
+    {
+      'input': Text('A lot of people'),
+      'output': Servings.Lots,
+      'isSelected': false,
+    },
+    {
+      'input': Text('A few people'),
+      'output': Servings.Some,
+      'isSelected': false,
+    },
+    {
+      'input': Text('One person'),
+      'output': Servings.One,
+      'isSelected': false,
+    }
+  ];
+  var _complexityOptions = [
+    {
+      'input': Text('Hard'),
+      'output': Complexity.Hard,
+      'isSelected': false,
+    },
+    {
+      'input': Text('Medium'),
+      'output': Complexity.Medium,
+      'isSelected': false,
+    },
+    {
+      'input': Text('Easy'),
+      'output': Complexity.Easy,
+      'isSelected': false,
+    }
+  ];
+
+  List<Map<String, Object>> _categoryOptions = [];
+
+  @override
+  void initState() {
+    _selectedServing = {'value': null};
+    _selectedComplexity = {'value': null};
+    _selectedCategories = {'value': []};
+    _categoryOptions = widget.categories.map((category) {
+      return {
+        'input': Text(category.title),
+        'output': category.title,
+        'isSelected': false,
+        'wherePutOutput': _selectedCategories,
+      };
+    }).toList();
+    _complexityOptions = [
+      {
+        'input': Text('Hard'),
+        'output': Complexity.Hard,
+        'isSelected': false,
+        'wherePutOutput': _selectedComplexity,
+      },
+      {
+        'input': Text('Medium'),
+        'output': Complexity.Medium,
+        'isSelected': false,
+        'wherePutOutput': _selectedComplexity,
+      },
+      {
+        'input': Text('Easy'),
+        'output': Complexity.Easy,
+        'isSelected': false,
+        'wherePutOutput': _selectedComplexity,
+      }
+    ];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _nameController = TextEditingController();
-    Servings _selectedServings;
-    Complexity _selectedComplexity;
-    final _timeToMakeController = TextEditingController();
-    final _imageURLController = TextEditingController();
-    final List<String> _selectedCategories = [];
-    final List<String> _preparationSteps = [''];
-    final List<Map<String, String>> _ingredients = [
-      {'': '', '': ''}
-    ];
-    final bool isGlutenFree = false;
-    final bool isLactoseFree = false;
-    final bool isVegan = false;
-    final bool isVegetarian = false;
-
-    void switchSelection(
-        int thisIdx,
-        Map<String, Object> thisOption,
-        bool canOnlySelectOne,
-        objectBasedOn,
-        List options) {
+    print('create meal build() was run');
+    void switchSelection(int thisIdx, bool canOnlySelectOne, Map<String, Object> wherePutOutput,
+        List<Map<String, Object>> options) {
       setState(() {
-        if (canOnlySelectOne) {
-          thisOption['isSelected'] = true;
-          options.map((option) {
-            if (option != thisOption) option['isSelected'] = false;
-          });
-        } else {
-          thisOption['isSelected'] = true;
+        if (options[thisIdx]['isSelected'])
+          options[thisIdx]['isSelected'] = false;
+        else {
+          if (canOnlySelectOne) {
+            List<Map<String, Object>> otherOptions =
+            options.where((option) => option != options[thisIdx]).toList();
+            for (var i = 0; i < otherOptions.length; i++) {
+              otherOptions[i]['isSelected'] = false;
+            }
+            options[thisIdx]['isSelected'] = true;
+          } else {
+            options[thisIdx]['isSelected'] = true;
+          }
         }
-        objectBasedOn = !canOnlySelectOne ? options.map((opt) {
+
+        wherePutOutput['value'] = !canOnlySelectOne
+            ? <Category>[...options.map((opt) {
           if (opt['isSelected'])
             return opt['output'];
           else
-            return;
-        }).toList() : options.firstWhere((opt) => opt['isSelected']);
+            return null;
+        }).toList()]
+            : options[thisIdx]['output'];
       });
+      print(_selectedServing == wherePutOutput);
+      print(options[thisIdx]);
+    }
+    Widget _buildButtonSelection(List<Map<String, Object>> options,
+        bool canOnlySelectOne, Object whereOutput) {
+      return ButtonSelectionDisplay(
+          options, canOnlySelectOne, switchSelection, whereOutput);
     }
 
     Widget _buildTextInput(String label, TextEditingController controller,
@@ -111,66 +196,22 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
             _buildTextInput('URL of image', _imageURLController,
                 TextInputType.url, Icons.insert_photo),
             _buildInputTitle('How many people does this recipe sereve'),
-            ButtonSelectionDisplay(
-              [
-                {
-                  'input': Text('A lot of people'),
-                  'output': Servings.Lots,
-                  'isSelected': false,
-                },
-                {
-                  'input': Text('A few people'),
-                  'output': Servings.Some,
-                  'isSelected': false,
-                },
-                {
-                  'input': Text('One person'),
-                  'output': Servings.One,
-                  'isSelected': false,
-                }
-              ],
+            _buildButtonSelection(
+              _servingsOptions,
               true,
-              switchSelection,
-              _selectedServings,
+              _selectedServing,
             ),
             _buildInputTitle('How hard is this recipe to make'),
-            ButtonSelectionDisplay(
-              [
-                {
-                  'input': Text('Hard'),
-                  'output': Complexity.Hard,
-                  'isSelected': false,
-                },
-                {
-                  'input': Text('Medium'),
-                  'output': Complexity.Medium,
-                  'isSelected': false,
-                },
-                {
-                  'input': Text('Easy'),
-                  'output': Complexity.Easy,
-                  'isSelected': false,
-                }
-              ],
+            _buildButtonSelection(
+              _complexityOptions,
               true,
-              switchSelection,
               _selectedComplexity,
             ),
-//            SizedBox(
-//              height: 20,
-//            ),
             _buildInputTitle('Which Categories Does This Meal Fall Into'),
-            ButtonSelectionDisplay(
-              widget.categories.map((category) {
-                return {
-                  'input': Text(category.title),
-                  'output': category.title,
-                  'isSelected': false,
-                };
-              }).toList(),
+            _buildButtonSelection(
+              _categoryOptions,
               false,
-              switchSelection,
-              _selectedCategories
+              _selectedCategories,
             ),
             _buildInputTitle('Which Ingredients Go Into This Meal'),
             MealAddIngredientDisplay(_ingredients),
@@ -178,26 +219,52 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
             MealAddStepDisplay(_preparationSteps),
             _buildInputTitle('Which (If Any) Apply To This Meal'),
             MealAddCustomizeSettings(
-                isGlutenFree, isLactoseFree, isVegan, isVegetarian),
+                _isGlutenFree, _isLactoseFree, _isVegan, _isVegetarian),
             SizedBox(
               height: 20,
             ),
             FloatingActionButton(
               child: Icon(Icons.add),
               onPressed: () {
+                print([
+                  'name: ',
+                  _nameController.text,
+                  'serving: ',
+                  _selectedServing['value'],
+                  'complexity: ',
+                  _selectedComplexity['value'],
+                  'time to make: ',
+                  _timeToMakeController.text,
+                  'image url: ',
+                  _imageURLController.text,
+                  'categories: ',
+                  _selectedCategories['value'],
+                  'preparation steps: ',
+                  _preparationSteps,
+                  'ingredients: ',
+                  _ingredients,
+                  'gluten free: ',
+                  _isGlutenFree,
+                  'lactose free: ',
+                  _isLactoseFree,
+                  'vegan: ',
+                  _isVegan,
+                  'vegetarian: ',
+                  _isVegetarian,
+                ]);
                 widget.addMeal(
                   _nameController,
-                  _selectedServings,
-                  _selectedComplexity,
+                  _selectedServing['vlaue'],
+                  _selectedComplexity['value'],
                   _timeToMakeController,
                   _imageURLController,
-                  _selectedCategories,
+                  _selectedCategories['value'],
                   _preparationSteps,
                   _ingredients,
-                  isGlutenFree,
-                  isLactoseFree,
-                  isVegan,
-                  isVegetarian,
+                  _isGlutenFree,
+                  _isLactoseFree,
+                  _isVegan,
+                  _isVegetarian,
                 );
                 Navigator.of(context).pop();
               },

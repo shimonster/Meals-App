@@ -47,6 +47,10 @@ class _MealAddStepDisplayState extends State<MealAddStepDisplay> {
               decoration: InputDecoration(
                 labelText: 'Step ${index + 1}',
               ),
+              onChanged: (_) {
+                widget.preparationSteps[index] =
+                    _stepInputControllers[index].text;
+              },
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
