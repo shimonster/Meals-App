@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
 
-class ButtonSelectionDisplay extends StatefulWidget {
+class ButtonSelectionDisplay extends StatelessWidget {
   final List<Map<String, Object>> options;
   final bool canOnlySelectOne;
   final Function switchSelection;
   final Object whereOutput;
+  final Function clearSelected;
 
-  ButtonSelectionDisplay(this.options, this.canOnlySelectOne,this.switchSelection , this.whereOutput);
-
-  @override
-  _ButtonSelectionDisplay createState() {
-    print('ButtonSelectionDisplay was run');
-    return _ButtonSelectionDisplay();
-  }
-}
-
-class _ButtonSelectionDisplay extends State<ButtonSelectionDisplay> {
-
+  ButtonSelectionDisplay(this.options, this.canOnlySelectOne,
+      this.switchSelection, this.whereOutput, this.clearSelected);
 
   @override
   Widget build(BuildContext context) {
@@ -25,32 +17,29 @@ class _ButtonSelectionDisplay extends State<ButtonSelectionDisplay> {
       primary: false,
       shrinkWrap: true,
       itemBuilder: (BuildContext ctx, int index) {
-        print('GridView.builder item builder was calld');
-        return RaisedButton(
-          child: widget.options[index]['input'],
-          color: widget.options[index]['isSelected']
-              ? Theme.of(context).primaryColor
-              : Theme.of(context).accentColor,
-          elevation: widget.options[index]['isSelected'] ? 10 : 0,
-          onPressed: () {
-            widget.switchSelection(
-              index,
-              widget.canOnlySelectOne,
-              widget.whereOutput,
-              widget.options,
-            );
-          },
-        );
+        return index >= options.length
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  clearSelected(options);
+                })
+            : RaisedButton(
+                child: options[index]['input'],
+                color: options[index]['isSelected']
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).accentColor,
+                elevation: options[index]['isSelected'] ? 10 : 0,
+                onPressed: () {
+                  switchSelection(
+                    index,
+                    canOnlySelectOne,
+                    whereOutput,
+                    options,
+                  );
+                },
+              );
       },
-//            IconButton(
-//              icon: Icon(Icons.clear),
-//              onPressed: () {
-//                setState(() {
-//                  widget.options.map((option) => option['isSelected'] = false);
-//                });
-//              },
-//            ),
-      itemCount: widget.options.length,
+      itemCount: options.length + 1,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200,
         childAspectRatio: 4 / 1,

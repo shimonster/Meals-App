@@ -25,8 +25,8 @@ enum filterElement {
 
 class _MyAppState extends State<MyApp> {
   List<Meal> filteredMeals;
-  var allMeals = dummyRecipes;
-  var allCategories = dummyCategories;
+  List<Meal> allMeals;
+  List<Category> allCategories;
 
   Map<filterElement, bool> _filters = {
     filterElement.glutenFree: false,
@@ -35,11 +35,13 @@ class _MyAppState extends State<MyApp> {
     filterElement.lactoseFree: false
   };
 
-  @override
-  void initState() {
-    filteredMeals = allMeals;
-    super.initState();
-  }
+    @override
+    void initState() {
+      allCategories = dummyCategories;
+      allMeals = dummyRecipes;
+      filteredMeals = allMeals;
+      super.initState();
+    }
 
   List<Meal> favoriteMeals = [];
 
@@ -103,45 +105,45 @@ class _MyAppState extends State<MyApp> {
     print(allCategories);
   }
 
-  void _addMeal(
-    TextEditingController nameController,
-    Servings selectedServings,
-    Complexity selectedComplexity,
-    TextEditingController timeToMakeController,
-    TextEditingController imageURLController,
-    List<String> selectedCategories,
-    List<String> preparationSteps,
-    List<Map<String, String>> ingredients,
-    bool isGlutenFree,
-    bool isLactoseFree,
-    bool isVegan,
-    bool isVegetarian,
-  ) {
-    setState(() {
-      allMeals.add(
-        Meal(
-          id: '${nameController.text}${imageURLController.text}',
-          name: nameController.text,
-          timeToMake: int.parse(timeToMakeController.text),
-          imageURL: imageURLController.text,
-          servings: selectedServings,
-          complexity: selectedComplexity,
-          categories: selectedCategories,
-          ingredients: ingredients,
-          preparationSteps: preparationSteps,
-          isVegetarian: isVegetarian,
-          isVegan: isVegan,
-          isLactoseFree: isLactoseFree,
-          isGlutenFree: isGlutenFree,
-        ),
-      );
-    });
-    print (allMeals);
-    print(allMeals[3].isVegan);
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    void _addMeal(
+        TextEditingController nameController,
+        Servings selectedServings,
+        Complexity selectedComplexity,
+        TextEditingController timeToMakeController,
+        TextEditingController imageURLController,
+        List<String> selectedCategories,
+        List<String> preparationSteps,
+        List<Map<String, String>> ingredients,
+        bool isGlutenFree,
+        bool isLactoseFree,
+        bool isVegan,
+        bool isVegetarian,
+        ) {
+      setState(() {
+        allMeals.add(
+          Meal(
+            id: '${nameController.text}${imageURLController.text}$ingredients',
+            name: nameController.text,
+            timeToMake: int.parse(timeToMakeController.text),
+            imageURL: imageURLController.text,
+            servings: selectedServings,
+            complexity: selectedComplexity,
+            categories: selectedCategories,
+            ingredients: ingredients,
+            preparationSteps: preparationSteps,
+            isVegetarian: isVegetarian,
+            isVegan: isVegan,
+            isLactoseFree: isLactoseFree,
+            isGlutenFree: isGlutenFree,
+          ),
+        );
+      });
+    }
+    //defineVars();
     print('main build was run');
     return MaterialApp(
       title: 'Meals',

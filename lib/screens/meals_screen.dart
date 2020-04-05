@@ -8,10 +8,14 @@ class MealsScreen extends StatefulWidget {
   static const screenRoute = '/Catigory Meals Screen';
   final List<Meal> filteredMeals;
 
-  MealsScreen(this.filteredMeals);
+  MealsScreen(this.filteredMeals) {
+    print('MealScreen widget was built');
+  }
 
   @override
-  _MealsScreenState createState() => _MealsScreenState();
+  _MealsScreenState createState() {
+    return _MealsScreenState();
+  }
 }
 
 class _MealsScreenState extends State<MealsScreen> {
@@ -34,7 +38,7 @@ class _MealsScreenState extends State<MealsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    print('mealScreen build() was run');
     return Scaffold(
       appBar: AppBar(
         title: Text(routeArgs['category title']),

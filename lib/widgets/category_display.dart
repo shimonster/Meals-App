@@ -7,7 +7,9 @@ class CategoryDisplay extends StatelessWidget {
   final Color color;
   final String id;
 
-  CategoryDisplay(this.title, this.color, this.id);
+  CategoryDisplay(this.title, this.color, this.id) {
+    print('category_display widget was built');
+  }
 
   void _selectCategory(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
@@ -18,6 +20,7 @@ class CategoryDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('categoryDisplay build() was run');
     return InkWell(
       onTap: () {
         _selectCategory(context);
@@ -29,8 +32,8 @@ class CategoryDisplay extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [color.withOpacity(0.7), color],
-            begin: Alignment.bottomRight,
-            end: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            begin: Alignment.topLeft,
           ),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),

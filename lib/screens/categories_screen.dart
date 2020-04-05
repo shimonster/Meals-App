@@ -17,7 +17,7 @@ class CategoriesScreen extends StatelessWidget {
       child: GridView(
         padding: EdgeInsets.all(25),
         children: <Widget>[
-          ...allCategories.map((Category catInfo) {
+          ...allCategories.map((catInfo) {
             return CategoryDisplay(catInfo.title, catInfo.color, catInfo.id);
           }).toList(),
           AddCategoryDisplay(addCategory),
