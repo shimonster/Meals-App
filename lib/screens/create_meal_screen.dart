@@ -29,11 +29,11 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
   final List<Map<String, String>> _ingredients = [
     {'': '', '': ''}
   ];
-  final bool _isGlutenFree = false;
-  final bool _isLactoseFree = false;
-  final bool _isVegan = false;
-  final bool _isVegetarian = false;
-  var _servingsOptions = [
+  final _isGlutenFree = {'value': false};
+  final _isLactoseFree = {'value': false};
+  final _isVegan = {'value': false};
+  final _isVegetarian = {'value': false};
+  final _servingsOptions = [
     {
       'input': Text('A lot of people'),
       'output': Servings.Lots,
@@ -129,12 +129,12 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
       });
     }
 
-//    void _manageSwitchSwitch (value) {
-//      setState(() {
-//        lactoseFree = value;
-//        print('lactose free ${lactoseFree}');
-//      });
-//    },
+    void _manageSwitchSwitch(value, Map<String, bool> setting) {
+      setState(() {
+        setting['value'] = value;
+        print('lactose free ${setting['value']}');
+      });
+    }
 
     Widget _buildButtonSelection(List<Map<String, Object>> options,
         bool canOnlySelectOne, Object whereOutput) {
@@ -216,30 +216,34 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
             MealAddStepDisplay(_preparationSteps),
             _buildInputTitle('Which (If Any) Apply To This Meal'),
             MealAddCustomizeSettings(
-                _isGlutenFree, _isLactoseFree, _isVegan, _isVegetarian),
+                _isGlutenFree,
+                _isLactoseFree,
+                _isVegan,
+                _isVegetarian,
+                _manageSwitchSwitch),
             SizedBox(
               height: 20,
             ),
             FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () {
-                widget.addMeal(
-                  _nameController,
-                  _selectedServing['value'],
-                  _selectedComplexity['value'],
-                  _timeToMakeController,
-                  _imageURLController,
-                  _selectedCategories['value'],
-                  _preparationSteps,
-                  _ingredients,
-                  _isGlutenFree,
-                  _isLactoseFree,
-                  _isVegan,
-                  _isVegetarian,
-                );
-                Navigator.of(context).pushReplacementNamed('/');
-              }
-            ),
+                child: Icon(Icons.add),
+                onPressed: () {
+                  widget.addMeal(
+                    _nameController,
+                    _selectedServing['value'],
+                    _selectedComplexity['value'],
+                    _timeToMakeController,
+                    _imageURLController,
+                    _selectedCategories['value'],
+                    _preparationSteps,
+                    _ingredients,
+                    _isGlutenFree['value'],
+                    _isLactoseFree['value'],
+                    _isVegan['value'],
+                    _isVegetarian['value'],
+                  );
+                  Navigator.of(context).pushReplacementNamed('/');
+                  print([_isGlutenFree, _isLactoseFree, _isVegan, _isVegetarian]);
+                }),
             SizedBox(
               height: 15,
             ),

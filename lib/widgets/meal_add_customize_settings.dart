@@ -1,74 +1,58 @@
 import 'package:flutter/material.dart';
 
 
-class MealAddCustomizeSettings extends StatefulWidget {
-  bool glutenFree;
-  bool lactoseFree;
-  bool vegan;
-  bool vegetarian;
+class MealAddCustomizeSettings extends StatelessWidget {
+  final Map<String, bool> glutenFree;
+  final Map<String, bool> lactoseFree;
+  final Map<String, bool> vegan;
+  final Map<String, bool> vegetarian;
+  final Function handleSwitch;
 
-  MealAddCustomizeSettings(this.glutenFree, this.lactoseFree, this.vegan, this.vegetarian);
-
-
-  @override
-  _MealAddCustomizeSettingsState createState() => _MealAddCustomizeSettingsState();
-}
-
-class _MealAddCustomizeSettingsState extends State<MealAddCustomizeSettings> {
-  Widget buildSwitchTile(
-      String typeString, bool controlValue, Function onSwitch) {
-    return SwitchListTile(
-      title: Text(typeString),
-      subtitle: Text('This Meal is $typeString'),
-      value: controlValue,
-      activeColor: Theme.of(context).primaryColor,
-      onChanged: onSwitch,
-    );
-  }
+  MealAddCustomizeSettings(this.glutenFree, this.lactoseFree, this.vegan, this.vegetarian, this.handleSwitch);
 
 
   @override
   Widget build(BuildContext context) {
+    Widget buildSwitchTile(
+        String typeString, bool controlValue, Function onSwitch) {
+      return SwitchListTile(
+        title: Text(typeString),
+        subtitle: Text('This Meal is $typeString'),
+        value: controlValue,
+        activeColor: Theme.of(context).primaryColor,
+        onChanged: onSwitch,
+      );
+    }
+
+
     return Column(
       children: <Widget>[
         buildSwitchTile(
           'gluten-free',
-          widget.glutenFree,
+          glutenFree['value'],
               (value) {
-            setState(() {
-              widget.glutenFree = value;
-              print('gluten free ${widget.glutenFree}');
-            });
+            handleSwitch(value, glutenFree);
           },
         ),
         buildSwitchTile(
           'vegan',
-          widget.vegan,
+          vegan['value'],
               (value) {
-            setState(() {
-              widget.vegan = value;
-              print('vegan ${widget.vegan}');
-            });
+                handleSwitch(value, vegan);
           },
         ),
         buildSwitchTile(
           'vegetarian',
-          widget.vegetarian,
+          vegetarian['value'],
               (value) {
-            setState(() {
-              widget.vegetarian = value;
-              print('vegetarian ${widget.vegetarian}');
-            });
+                handleSwitch(value, vegetarian);
           },
         ),
         buildSwitchTile(
           'lactose-free',
-          widget.lactoseFree,
+          lactoseFree['value'],
               (value) {
-            setState(() {
-              widget.lactoseFree = value;
-              print('lactose free ${widget.lactoseFree}');
-            });
+                handleSwitch(value, lactoseFree);
           },
         ),
       ],
